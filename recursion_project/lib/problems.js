@@ -16,10 +16,11 @@
 // lucasNumber(3)   // => 4
 // lucasNumber(5)   // => 11
 // lucasNumber(9)   // => 76
-function lucasNumber(n) {
-
+const lucasNumber = num => {
+  if (num === 0) return 2;
+  if (num === 1) return 1;
+  return lucasNumber(num - 1) + lucasNumber(num - 2);
 }
-
 
 // Write a function, sumArray(array), that takes in an array of numbers.
 // The function should return the total sum of the elements.
@@ -32,10 +33,10 @@ function lucasNumber(n) {
 // sumArray([5])            // => 5
 // sumArray([5, 2])         // => 7
 // sumArray([4, 10, -1, 2]) // => 15
-function sumArray(array) {
-
+const sumArray = arr => {
+  if (!arr.length) return 0;
+  return arr[0] + sumArray(arr.slice(1));
 }
-
 
 // Write a function, reverseString(str), that takes in a string.
 // The function should return the string with it's characters in reverse order.
@@ -48,10 +49,10 @@ function sumArray(array) {
 // reverseString("c")           // => "c"
 // reverseString("internet")    // => "tenretni"
 // reverseString("friends")     // => "sdneirf"
-function reverseString(str) {
-
+const reverseString = str => {
+  if (!str.length) return "";
+  return str[str.length - 1] + reverseString(str.slice(0, str.length - 1));
 }
-
 
 // Write a function, pow(base, exponent), that takes in two numbers.
 // The function should calculate the base raised to the exponent power.
@@ -69,10 +70,14 @@ function reverseString(str) {
 // pow(2, 5)    // => 32
 // pow(3, 4)    // => 81
 // pow(2, -5)   // => 0.03125
-function pow(base, exponent) {
-
+const pow = (base, exponent) => {
+  if (exponent === 0) return 1;
+  if (exponent > 0) {
+    return base * pow(base, exponent - 1);
+  } else {
+    return 1 / pow(base, -exponent);
+  }
 }
-
 
 // A 1-dimensional array is also known as a flattened array.
 // Write a method, flatten(data), that accepts a single argument. The
@@ -102,8 +107,18 @@ function pow(base, exponent) {
 //     1-dimensional array: ['some data']
 //     2-dimensional array: [['some data']]
 //     3-dimensional array: [[['some data']]]
-function flatten(data) {
-
+const flatten = data => {
+  if (!data instanceof Array) return data;
+  let flattened = [];
+  for (let idx = 0; idx < data.length; idx++) {
+    const currEle = data[idx];
+    if (currEle instanceof Array) {
+      flattened = flattened.concat(flatten(currEle));
+    } else {
+      flattened.push(currEle);
+    }
+  }
+  return flattened;
 }
 
 // Write a function, fileFinder(directories, targetFile), that accepts an object representing directories and a string respresenting a filename.
@@ -145,10 +160,18 @@ function flatten(data) {
 // fileFinder(desktop, 'app_academy_logo.svg');     // => true
 // fileFinder(desktop, 'everlong.flac');            // => true
 // fileFinder(desktop, 'sequoia.jpeg');             // => false
-function fileFinder(directories, targetFile) {
-
+const fileFinder = (directories, targetFile) => {
+  if (Object.keys(directories).includes(targetFile)) return true;
+  return (
+    Object.keys(directories).map(directory => {
+      if (directory.startsWith("/")) {
+        return fileFinder(directories[directory], targetFile);
+      } else {
+        return directory === targetFile
+      }
+    }).some(bool => bool)
+  );
 }
-
 
 // Write another function, pathFinder(directories, targetFile), that returns the path that contains the targetFile.
 // If the targetFile is not found in the directories, then return null.
@@ -159,10 +182,28 @@ function fileFinder(directories, targetFile) {
 // pathFinder(desktop, 'trixie_lou.jpeg'));     // => '/images/pets/trixie_lou.jpeg'
 // pathFinder(desktop, 'everlong.flac'));       // => '/music/genres/rock/everlong.flac'
 // pathFinder(desktop, 'honeybadger.png'));     // => null
-function pathFinder(directories, targetFile) {
 
+// Customized myFind function that returns null instead of undefined if nothing is truthy
+const myFind = pathArr => {
+  const mapped = pathArr.map(path => path ? path : null);
+  const foundPath = mapped.find(path => path);
+  return foundPath ? foundPath : null;
 }
 
+const pathFinder = (directories, targetFile) => {
+  if (Object.keys(directories).includes(targetFile)) return `/${targetFile}`;
+  const mapped = (
+    Object.keys(directories).map(directory => {
+      if (directory.startsWith("/")) {
+        const result = pathFinder(directories[directory], targetFile);
+        return result ? directory + result : null;
+      } else {
+        return null;
+      }
+    })
+  )
+  return myFind(mapped);
+}
 
 module.exports = {
     lucasNumber,
