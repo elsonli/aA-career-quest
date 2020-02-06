@@ -51,7 +51,7 @@ const sumArray = arr => {
 // reverseString("friends")     // => "sdneirf"
 const reverseString = str => {
   if (!str.length) return "";
-  return str[str.length - 1] + reverseString(str.slice(0, str.length - 1));
+  return reverseString(str.slice(1)) + str[0];
 }
 
 // Write a function, pow(base, exponent), that takes in two numbers.
@@ -108,15 +108,11 @@ const pow = (base, exponent) => {
 //     2-dimensional array: [['some data']]
 //     3-dimensional array: [[['some data']]]
 const flatten = data => {
-  if (!data instanceof Array) return data;
+  if (!Array.isArray(data)) return [data];
   let flattened = [];
   for (let idx = 0; idx < data.length; idx++) {
     const currEle = data[idx];
-    if (currEle instanceof Array) {
-      flattened = flattened.concat(flatten(currEle));
-    } else {
-      flattened.push(currEle);
-    }
+    flattened = flattened.concat(flatten(currEle));
   }
   return flattened;
 }
@@ -191,17 +187,21 @@ const myFind = pathArr => {
 }
 
 const pathFinder = (directories, targetFile) => {
+
+  // File has been found, so we can return the file name to be appended
   if (Object.keys(directories).includes(targetFile)) return `/${targetFile}`;
+
+  // Recursively construct paths until file is found, otherwise all elements are null
   const mapped = (
     Object.keys(directories).map(directory => {
       if (directory.startsWith("/")) {
         const result = pathFinder(directories[directory], targetFile);
         return result ? directory + result : null;
-      } else {
-        return null;
       }
     })
   )
+
+  // Return the only path to that file, or null if there is no such path
   return myFind(mapped);
 }
 
