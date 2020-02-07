@@ -15,8 +15,12 @@
 // lucasNumberMemo(40)  // => 228826127
 // lucasNumberMemo(41)  // => 370248451
 // lucasNumberMemo(42)  // => 599074578
-function lucasNumberMemo(n, memo = {}) {
-
+const lucasNumberMemo = (num, memo = {}) => {
+  if (num in memo) return memo[num];
+  if (num === 0) return 2;
+  if (num === 1) return 1;
+  memo[num] = lucasNumberMemo(num - 1, memo) + lucasNumberMemo(num - 2, memo);
+  return memo[num];
 }
 
 // Write a function, minChange(coins, amount), that accepts an array of coin values
@@ -32,12 +36,18 @@ function lucasNumberMemo(n, memo = {}) {
 // minChange([1, 4, 5], 8))         // => 2, because 4 + 4 = 8
 // minChange([1, 5, 10, 25], 15)    // => 2, because 10 + 5 = 15
 // minChange([1, 5, 10, 25], 100)   // => 4, because 25 + 25 + 25 + 25 = 100
-function minChange(coins, amount, memo = {}) {
-
+const minChange = (coins, amount, memo = {}) => {
+  if (memo[amount]) return memo[amount];
+  if (!amount) return 0;
+  const currCoin = coins[0];
+  if (amount >= currCoin) {
+    const include = 1 + minChange(coins, amount - currCoin, memo);
+    const exclude = minChange(coins.slice(1), amount, memo);
+    return exclude ? (exclude > include ? include : exclude) : include;
+  }
 }
 
-
 module.exports = {
-    lucasNumberMemo,
-    minChange
+  lucasNumberMemo,
+  minChange
 };
