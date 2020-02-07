@@ -37,14 +37,24 @@ const lucasNumberMemo = (num, memo = {}) => {
 // minChange([1, 5, 10, 25], 15)    // => 2, because 10 + 5 = 15
 // minChange([1, 5, 10, 25], 100)   // => 4, because 25 + 25 + 25 + 25 = 100
 const minChange = (coins, amount, memo = {}) => {
+  // MEMOIZATION
   if (memo[amount]) return memo[amount];
   if (!amount) return 0;
-  const currCoin = coins[0];
-  if (amount >= currCoin) {
-    const include = 1 + minChange(coins, amount - currCoin, memo);
-    const exclude = minChange(coins.slice(1), amount, memo);
-    return exclude ? (exclude > include ? include : exclude) : include;
-  }
+  let numCoins = [];
+  coins.forEach(coin => {
+    if (coin <= amount) numCoins.push(1 + minChange(coins, amount - coin, memo));
+  });
+  memo[amount] = Math.min(...numCoins);
+  return memo[amount];
+
+  // NO MEMOIZATION
+  // if (!amount) return 0;
+  // const currCoin = coins[0];
+  // if (amount >= currCoin) {
+  //   const include = 1 + minChange(coins, amount - currCoin, memo);
+  //   const exclude = minChange(coins.slice(1), amount, memo);
+  //   return exclude ? (exclude > include ? include : exclude) : include;
+  // }
 }
 
 module.exports = {
