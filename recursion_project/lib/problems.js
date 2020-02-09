@@ -206,11 +206,11 @@ const pathFinder = (directories, targetFile) => {
 }
 
 module.exports = {
-    lucasNumber,
-    sumArray,
-    reverseString,
-    pow,
-    flatten,
-    fileFinder,
-    pathFinder
+  lucasNumber,
+  sumArray,
+  reverseString,
+  pow,
+  flatten,
+  fileFinder,
+  pathFinder
 };
