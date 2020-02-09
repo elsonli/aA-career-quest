@@ -19,6 +19,6 @@ const mergeSort = array => {
 }
 
 module.exports = {
-    merge,
-    mergeSort
+  merge,
+  mergeSort
 };
