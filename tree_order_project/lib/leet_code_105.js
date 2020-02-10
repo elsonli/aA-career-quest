@@ -4,13 +4,13 @@
 const { TreeNode } = require('./tree_node.js');
 
 const buildTree = (preorder, inorder) => {
-  if (!preorder.length && !inorder.length) return [];
-  const rootVal = preorder.shift(); // 3
-  const rootValIdx = inorder.indexOf(rootVal); // 1
-  const leftVals = inorder.slice(0, rootValIdx); // [9]
-  const rightVals = inorder.slice(rootValIdx + 1); // [15, 20, 7]
-  const newRoot = new TreeNode(rootVal); // TreeNode(3)
-  newRoot.left = buildTree(preorder.slice(0, rootValIdx + 1), leftVals);
+  if (!preorder.length && !inorder.length) return null;
+  const rootVal = preorder.shift();
+  const rootValIdx = inorder.indexOf(rootVal);
+  const leftVals = inorder.slice(0, rootValIdx);
+  const rightVals = inorder.slice(rootValIdx + 1);
+  const newRoot = new TreeNode(rootVal);
+  newRoot.left = buildTree(preorder.slice(0, rootValIdx), leftVals);
   newRoot.right = buildTree(preorder.slice(rootValIdx), rightVals);
   return newRoot;
 }
