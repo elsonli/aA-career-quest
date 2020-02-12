@@ -76,6 +76,7 @@ class Trie {
     while (prefixCopy.length) {
       let firstLetter = prefixCopy[0];
       prefixCopy = prefixCopy.slice(1);
+      if (!currNode.children[firstLetter]) return [];
       currNode = currNode.children[firstLetter];
     }
     let result = this.allWordsFromRoot(prefix, currNode);

@@ -243,13 +243,13 @@ describe('Trie', () => {
                 trie.insertRecur('inside');
                 trie.insertRecur('instructor');
     
-                // expect(trie.wordsWithPrefix('t').sort()).to.eql(['taco', 'tea', 'ten', 'tex']);
-                // expect(trie.wordsWithPrefix('te').sort()).to.eql(['tea', 'ten', 'tex']);
+                expect(trie.wordsWithPrefix('t').sort()).to.eql(['taco', 'tea', 'ten', 'tex']);
+                expect(trie.wordsWithPrefix('te').sort()).to.eql(['tea', 'ten', 'tex']);
                 expect(trie.wordsWithPrefix('tex').sort()).to.eql(['tex']);
-                // expect(trie.wordsWithPrefix('in').sort()).to.eql(['in', 'inn', 'inside', 'instructor']);
-                // expect(trie.wordsWithPrefix('ins').sort()).to.eql(['inside', 'instructor']);
-                // expect(trie.wordsWithPrefix('inner').sort()).to.eql([]);
-                // expect(trie.wordsWithPrefix('zoo').sort()).to.eql([]);
+                expect(trie.wordsWithPrefix('in').sort()).to.eql(['in', 'inn', 'inside', 'instructor']);
+                expect(trie.wordsWithPrefix('ins').sort()).to.eql(['inside', 'instructor']);
+                expect(trie.wordsWithPrefix('inner').sort()).to.eql([]);
+                expect(trie.wordsWithPrefix('zoo').sort()).to.eql([]);
             });
         });
     });
